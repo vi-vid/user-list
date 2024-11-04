@@ -1,0 +1,82 @@
+@if (vm(); as vm) {
+    <table>
+        <thead>
+            <tr>
+                @for (column of columns(); track $index) {
+                    <th>
+                        {{ column.label }}
+                        @if(column.sortable) {
+                            <span class="sort">
+                                <input [id]="'sort' + $index" type="radio" name="sort" value="" (change)="onChangeSort(undefined)">
+                                <input [id]="'sort' + $index + 'asc'" type="radio" name="sort" value="asc" (change)="onChangeSort({ propertyKey: column.propertyKey, isAscending: true })">
+                                <input [id]="'sort' + $index + 'desc'" type="radio" name="sort" value="desc" (change)="onChangeSort({ propertyKey: column.propertyKey, isAscending: false })">
+    
+                                <label class="sort-button-asc" [for]="'sort' + $index + 'asc'"></label>
+                                <label class="sort-button" [for]="'sort' + $index"></label>
+                                <label class="sort-button-desc" [for]="'sort' + $index + 'desc'"></label>
+                            </span>
+                        }
+                    </th>
+                }
+            </tr>
+            <tr>
+                @for (column of columns(); track $index) {
+                    <th>
+                        @if(column.filterable) {
+                            <input type="search" [value]="vm.configuration?.filter?.key === column.propertyKey ? vm.configuration?.filter?.value : ''" (input)="onChangeFilter($event, column.propertyKey)">
+                        }
+                    </th>
+                }
+            </tr>
+        </thead>
+        @if (vm.error) {
+            <tbody>
+                <tr>
+                    <td [attr.colspan]="columns().length">
+                        error: {{ vm.error }}
+                    </td>
+                </tr>
+            </tbody>
+        } @else {
+            <tbody>
+                @for (entry of entries(); track $index) {
+                    <tr>
+                        @for (column of columns(); track $index) {
+                            <td>
+                                @if (entry[column.propertyKey]; as value) {
+                                    @if (column.renderFn; as renderFn) {
+                                        {{ renderFn(value, column) }}
+                                    } @else {
+                                        {{ value }}
+                                    }
+                                } @else {
+                                    &nbsp;
+                                }
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td [attr.colspan]="columns().length">
+                        <span class="pagination">
+                            <span>
+                                <button type="button" (click)="onChangePage(-1)" [disabled]="page() <= 1">☜</button>
+                                {{ page() }}
+                                <button type="button" (click)="onChangePage(1)"  [disabled]="page() >= maxPage()">☞</button>
+                            </span>
+
+                            <span>
+                                show {{ skip() + 1 }} to {{ skip() + limit() }} of {{ total() }} entries
+                            </span>
+                        </span>
+                    </td>
+                </tr>
+            </tfoot>
+        }
+    </table>
+    @if (vm.isLoading) {
+        <div class="loading-indicator"><span>...loading</span></div>
+    }
+}

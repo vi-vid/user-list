@@ -1,1 +1,12 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'reset-css';
+
+html {
+  font-family: "Roboto Mono", monospace;
+  font-optical-sizing: auto;
+  font-weight: 100;
+  font-style: normal;
+}
+
+*, *::after, *::before {
+    box-sizing: border-box;
+}

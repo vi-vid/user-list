@@ -1,0 +1,144 @@
+@import 'color';
+
+$data-table-ascending-sign: '⏶' !default;
+$data-table-descending-sign: '⏷' !default;
+
+:host {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+table {
+    width: 100%;
+}
+
+table, td, th {
+    border: 1px solid $color-border;
+    padding: 4px;
+}
+
+thead, tfoot {
+    background: $color-layer;
+}
+
+th {
+    position: relative;
+    padding-right: 18px;
+}
+
+input {
+    font-family: inherit;
+}
+
+.sort {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: auto;
+    width: 16px;
+    display: flex;
+    position: absolute;
+    align-items: stretch;
+    flex-direction: column;
+    justify-content: stretch;
+
+    input {
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 0;
+        margin: 0;
+        position: absolute;
+        display: flex;
+    }
+
+    .sort-button {
+        display: none;
+    }
+
+    .sort-button-asc,
+    .sort-button-desc {
+        display: flex;
+    }
+
+    .sort-button,
+    .sort-button-asc,
+    .sort-button-desc {
+        flex: 1;
+        align-items: center;
+        justify-content: center;
+
+        &:before {
+            display: block;
+            font-size: 12px;
+            line-height: 1;
+        }
+        
+        &:hover, 
+        &:focus {
+            cursor: pointer;
+            background-color: $color-layer-interaction;
+        }
+    }
+
+    .sort-button-asc:before {
+        content: $data-table-ascending-sign;
+    }
+
+    .sort-button-desc:before {
+        content: $data-table-descending-sign;
+    }
+
+    [value="asc"]:checked ~ .sort-button-asc {
+        display: none;
+
+        &:before {
+            content: none;
+        }
+    }
+
+    [value="desc"]:checked ~ .sort-button-desc {
+        display: none;
+
+        &:before {
+            content: none;
+        }
+    }
+
+    [value="asc"]:checked ~ .sort-button {
+        display: flex;
+
+        &:before {
+            content: $data-table-ascending-sign;
+            color: $color-primary;
+        }
+    }
+
+    [value="desc"]:checked ~ .sort-button {
+        display: flex;
+
+        &:before {
+            content: $data-table-descending-sign;
+            color: $color-primary;
+        }
+    }
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.loading-indicator {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba($color-layer, 50%);
+}
